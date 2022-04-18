@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Main from "./Main";
@@ -6,9 +6,9 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 
 export default function App() {
-  const [isEditProfile, setEditProfile] = React.useState(false);
-  const [isAddElement, setAddElement] = React.useState(false);
-  const [isAddAvatar, setAddAvatar] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
 
   function handleCardClick(card) {
@@ -16,36 +16,36 @@ export default function App() {
   }
 
   function handleEditAvatarClick() {
-    setAddAvatar(true);
+    setIsEditAvatarPopupOpen(true);
   }
 
   function handleEditProfileClick() {
-    setEditProfile(true);
+    setIsEditProfilePopupOpen(true);
   }
 
   function handleAddElementClick() {
-    setAddElement(true);
+    setIsAddPlacePopupOpen(true);
   }
 
   function closeAllPopups() {
-    setAddAvatar(false);
-    setEditProfile(false);
-    setAddElement(false);
+    setIsEditAvatarPopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
     setSelectedCard({});
   }
 
-  const closeAllPopupsEsc = useCallback((evt) => {
-    if (evt.key === "Escape") {
-      closeAllPopups();
-    }
-  }, []);
-
   useEffect(() => {
-    document.addEventListener("keydown", closeAllPopupsEsc);
-    return () => {
-      document.removeEventListener("keydown", closeAllPopupsEsc);
+    const closeAllPopupsEsc = (evt) => {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      }
     };
-  }, [closeAllPopupsEsc]);
+
+    document.addEventListener('keydown', closeAllPopupsEsc);
+    return () => {
+      document.removeEventListener('keydown', closeAllPopupsEsc);
+    };
+  }, []); 
 
   return (
     <div className="page">
@@ -62,9 +62,8 @@ export default function App() {
         name="profile"
         title="Редактировать профиль"
         text="Сохранить"
-        isOpen={isEditProfile}
+        isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
-        onCloseEsc={closeAllPopupsEsc}
       >
         <input
           required
@@ -92,9 +91,8 @@ export default function App() {
         name="element"
         title="Новое место"
         text="создать"
-        isOpen={isAddElement}
+        isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
-        onCloseEsc={closeAllPopupsEsc}
       >
         <input
           className="popup__text popup__text_type_title"
@@ -128,9 +126,8 @@ export default function App() {
         name="avatar"
         title="Обновить аватар"
         text="Создать"
-        isOpen={isAddAvatar}
+        isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
-        onCloseEsc={closeAllPopupsEsc}
       >
         <input
           required
