@@ -1,29 +1,16 @@
-import React, { useEffect } from "react";
-import { api } from "../utils/Api";
+import React, { useContext } from "react";
 import Card from "./Cards";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export default function Main(props) {
-  const [userAvatar, setUserAvatar] = React.useState(null);
-  const [userName, setUserName] = React.useState(null);
-  const [userDescription, setUserDescription] = React.useState(null);
-  const [cards, setCards] = React.useState([]);
+  const currentUser = useContext(CurrentUserContext);
 
-  React.useEffect(() => {
-    Promise.all([api.getProfileData(), api.getInitialCards()])
-      .then(([data, cards]) => {
-        setUserName(data.name);
-        setUserDescription(data.about);
-        setUserAvatar(data.avatar);
-        setCards(cards);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`));
-  }, []);
 
   return (
     <main>
       <section className="profile">
         <div className="profile__items">
-          {userAvatar && (<img className="profile__photo" alt="Жак-Ив Кусто" src={userAvatar} />)}
+          {currentUser.avatar && (<img className="profile__photo" alt="Жак-Ив Кусто" src={currentUser.avatar} />)}
           <button
             className="profile__change-avatar"
             type="button"
@@ -31,14 +18,14 @@ export default function Main(props) {
           ></button>
         </div>
         <div className="profile__info">
-          <h1 className="profile__title">{userName}</h1>
+          <h1 className="profile__title">{currentUser.name}</h1>
           <button
             className="profile__edit-button"
             type="button"
             aria-label="Редактировать"
             onClick={props.onEditProfile}
           ></button>
-          <p className="profile__text">{userDescription}</p>
+          <p className="profile__text">{currentUser.about}</p>
         </div>
         <button
           className="profile__add-button"
@@ -48,8 +35,8 @@ export default function Main(props) {
         ></button>
       </section>
       <section className="elements">
-        {cards.map((card) => (
-          <Card key={card._id} card={card} onCardClick={props.onCardClick} />
+        {props.cards.map((card) => (
+          <Card key={card._id} card={card} onCardClick={props.onCardClick} onCardLike={props.onCardLike} onCardDelete={props.onCardDelete} />
         ))}
       </section>
     </main>

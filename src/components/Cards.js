@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useContext } from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export default function Card(props) {
+  const currentUser = useContext(CurrentUserContext);
+  const isOwn = props.card.owner._id === currentUser._id;
+  const cardDeleteButtonClassName = (
+    `element__delete ${isOwn ? '' : 'element__delete_hidden'}`
+  );
+  const isLiked = props.card.likes.some(i => i._id === currentUser._id);
+  const cardLikeButtonClassName = (`element__button ${isLiked && 'element__button_active'}`);
+
+
+
   function handleClick() {
     props.onCardClick(props.card);
   }
+
+  function handleDeleteClick() {
+    props.onCardDelete(props.card);
+  }
+
+  function handleLikeClick() {
+    props.onCardLike(props.card);
+  }
+
   return (
     <article className="element">
       <img
@@ -13,7 +33,8 @@ export default function Card(props) {
         onClick={handleClick}
       />
       <button
-        className="element__delete"
+        className={cardDeleteButtonClassName}
+        onClick={handleDeleteClick}
         type="button"
         aria-label="удалить"
       ></button>
@@ -21,7 +42,8 @@ export default function Card(props) {
         <h2 className="element__title">{props.card.name}</h2>
         <div className="element__like">
           <button
-            className="element__button"
+            className={cardLikeButtonClassName}
+            onClick={handleLikeClick}
             type="button"
             aria-label="понравилось"
           ></button>
