@@ -1,13 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export default function AddPlacePopup(props) {
-
-
-  const currentUser = useContext(CurrentUserContext);
-  const [name, setName] = useState('');
-  const [link, setLink] = useState('');
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
 
   function handleNameChange(evt) {
     setName(evt.target.value);
@@ -17,9 +13,9 @@ export default function AddPlacePopup(props) {
     setLink(evt.target.value);
   }
   useEffect(() => {
-    setName(currentUser.name);
-    setLink(currentUser.link);
-  }, [currentUser]);
+    setName("");
+    setLink("");
+  }, [props.isOpen]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -43,6 +39,7 @@ export default function AddPlacePopup(props) {
         maxLength="30"
         type="text"
         name="name"
+        value={name}
         placeholder="Название"
         id="title-card"
         onChange={handleNameChange}
@@ -53,11 +50,12 @@ export default function AddPlacePopup(props) {
         className="popup__text popup__text_type_image"
         type="url"
         name="link"
+        value={link}
         placeholder="Ссылка на картинку"
         id="image-card"
         onChange={handleLinkChange}
       />
       <span id="image-card-error" className="error"></span>
     </PopupWithForm>
-  )
+  );
 }

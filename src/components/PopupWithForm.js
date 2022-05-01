@@ -1,12 +1,9 @@
-import React from "react";
-
 export default function PopupWithForm(props) {
   return (
     <div>
       <article
-        className={`popup popup_${props.name} ${
-          props.isOpen && "popup_opened"
-        }`}
+        className={`popup popup_${props.name} ${props.isOpen && "popup_opened"
+          }`}
       >
         <form
           className={`popup__container popup__container_type_${props.name}`}

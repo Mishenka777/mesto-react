@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { api } from "../utils/Api";
@@ -18,28 +18,26 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
-
   useEffect(() => {
     Promise.all([api.getProfileData(), api.getInitialCards()])
       .then(([user, cards]) => {
-        setCurrentUser(user)
-        setCards(cards)
+        setCurrentUser(user);
+        setCards(cards);
       })
-      .catch((err) => console.log(`Ошибка ${err}`))
+      .catch((err) => console.log(`Ошибка ${err}`));
   }, []);
 
   useEffect(() => {
     const closeAllPopupsEsc = (evt) => {
-      if (evt.key === 'Escape') {
+      if (evt.key === "Escape") {
         closeAllPopups();
       }
     };
-    document.addEventListener('keydown', closeAllPopupsEsc);
+    document.addEventListener("keydown", closeAllPopupsEsc);
     return () => {
-      document.removeEventListener('keydown', closeAllPopupsEsc);
+      document.removeEventListener("keydown", closeAllPopupsEsc);
     };
   }, []);
-
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -52,42 +50,46 @@ export default function App() {
           state.map((c) => (c._id === card._id ? newCard : c))
         );
       })
-      .catch((err) => console.log(`Ошибка ${err}`))
-  };
+      .catch((err) => console.log(`Ошибка ${err}`));
+  }
 
   function handleCardDelete(card) {
-    api.deleteCard(card._id)
+    api
+      .deleteCard(card._id)
       .then(() => {
         setCards((cards) => cards.filter((c) => c._id !== card._id));
       })
-      .catch((err) => console.log(`Ошибка ${err}`))
+      .catch((err) => console.log(`Ошибка ${err}`));
   }
 
   function handleUpdateUser(name, about) {
-    api.setProfileData(name, about)
+    api
+      .setProfileData(name, about)
       .then((data) => {
         setCurrentUser(data);
         closeAllPopups();
       })
-      .catch((err) => console.log(`Ошибка ${err}`))
-  };
+      .catch((err) => console.log(`Ошибка ${err}`));
+  }
 
   function handleAddPlaceSubmit(name, link) {
-    api.addCard(name, link)
+    api
+      .addCard(name, link)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch((err) => console.log(`Ошибка ${err}`))
+      .catch((err) => console.log(`Ошибка ${err}`));
   }
 
   function handleUpdateAvatar(avatar) {
-    api.setAvatar(avatar)
+    api
+      .setAvatar(avatar)
       .then((data) => {
-        setCurrentUser(data)
-        closeAllPopups()
+        setCurrentUser(data);
+        closeAllPopups();
       })
-      .catch((err) => console.log(`Ошибка ${err}`))
+      .catch((err) => console.log(`Ошибка ${err}`));
   }
 
   function handleCardClick(card) {
@@ -136,8 +138,7 @@ export default function App() {
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
-        >
-        </AddPlacePopup>
+        ></AddPlacePopup>
 
         <PopupWithForm
           name="confirm"

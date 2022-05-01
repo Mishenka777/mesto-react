@@ -1,16 +1,21 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import Card from "./Cards";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export default function Main(props) {
   const currentUser = useContext(CurrentUserContext);
 
-
   return (
     <main>
       <section className="profile">
         <div className="profile__items">
-          {currentUser.avatar && (<img className="profile__photo" alt="Жак-Ив Кусто" src={currentUser.avatar} />)}
+          {currentUser.avatar && (
+            <img
+              className="profile__photo"
+              alt="Жак-Ив Кусто"
+              src={currentUser.avatar}
+            />
+          )}
           <button
             className="profile__change-avatar"
             type="button"
@@ -36,7 +41,13 @@ export default function Main(props) {
       </section>
       <section className="elements">
         {props.cards.map((card) => (
-          <Card key={card._id} card={card} onCardClick={props.onCardClick} onCardLike={props.onCardLike} onCardDelete={props.onCardDelete} />
+          <Card
+            key={card._id}
+            card={card}
+            onCardClick={props.onCardClick}
+            onCardLike={props.onCardLike}
+            onCardDelete={props.onCardDelete}
+          />
         ))}
       </section>
     </main>

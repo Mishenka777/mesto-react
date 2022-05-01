@@ -1,10 +1,8 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 export default function EditAvatarPopup(props) {
-
   const avatarRef = useRef();
-
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -39,6 +37,4 @@ export default function EditAvatarPopup(props) {
       <span id="title-avatar-error" className="error"></span>
     </PopupWithForm>
   );
-
-
 }
